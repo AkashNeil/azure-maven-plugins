@@ -76,6 +76,9 @@ public class ConfigParser {
     }
 
     public PricingTier getPricingTier() {
+        if (StringUtils.isEmpty(mojo.getPricingTier())) {
+            return null;
+        }
         return parseExpandableParameter(input -> {
             if (StringUtils.contains(mojo.getPricingTier(), "_")) {
                 final String[] pricingParams = mojo.getPricingTier().split("_");
@@ -99,6 +102,9 @@ public class ConfigParser {
     }
 
     public Region getRegion() {
+        if (StringUtils.isEmpty(mojo.getRegion())) {
+            return null;
+        }
         return parseExpandableParameter(Region::fromName, mojo.getRegion(), EXPANDABLE_REGION_WARNING);
     }
 
@@ -135,8 +141,10 @@ public class ConfigParser {
         if (os == OperatingSystem.DOCKER) {
             return Runtime.DOCKER;
         }
-        final JavaVersion javaVersion = parseExpandableParameter(JavaVersion::fromString, runtime.getJavaVersion(), EXPANDABLE_JAVA_VERSION_WARNING);
-        final WebContainer webContainer = parseExpandableParameter(WebContainer::fromString, runtime.getWebContainer(), EXPANDABLE_WEB_CONTAINER_WARNING);
+        final JavaVersion javaVersion = StringUtils.isEmpty(runtime.getJavaVersion()) ? null :
+                parseExpandableParameter(JavaVersion::fromString, runtime.getJavaVersion(), EXPANDABLE_JAVA_VERSION_WARNING);
+        final WebContainer webContainer = StringUtils.isEmpty(runtime.getWebContainer()) ? null :
+                parseExpandableParameter(WebContainer::fromString, runtime.getWebContainer(), EXPANDABLE_WEB_CONTAINER_WARNING);
         return Runtime.getRuntime(os, webContainer, javaVersion);
     }
 

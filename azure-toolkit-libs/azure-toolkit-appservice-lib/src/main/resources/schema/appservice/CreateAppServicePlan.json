@@ -4,7 +4,7 @@
   "description": "Schema for AppServicePlanConfig when update existing service plan",
   "allOf": [
     {
-      "$ref": "classpath:///schema/appservice/UpdateAppServicePlan.json"
+      "$ref": "classpath:///schema/appservice/AppServicePlan.json"
     }
   ],
   "required": [
